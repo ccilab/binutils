@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2016-12-01  Cary Coutant  <ccoutant@gmail.com>
 
 	PR gold/20717
@@ -116,12 +117,15 @@
 	* tilegx.cc (Target_tilegx::Relocate::relocate): Likewise.
 	* resolve.cc (symbol_to_bits): Add missing break.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-09-26  Cary Coutant  <ccoutant@gmail.com>
 
 	PR gold/20238
 	* symtab.cc (Symbol_table::define_default_version): Check that
 	unversioned symbol is defined.
 
+<<<<<<< HEAD
 2016-09-26  Vlad Zakharov  <vzakhar@synopsys.com>
 
 	* Makefile.in: Regenerate.
@@ -189,6 +193,8 @@
 	increase.
 	(Target_powerpc::do_relax): Add code to record last size.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-08-23  Roland McGrath  <roland@hack.frob.com>
 
 	* options.h (General_options): Grok -z stack-size.
@@ -199,6 +205,7 @@
 	(Layout::set_segment_offsets): Don't call ->set_offset on the
 	PT_GNU_STACK segment.
 
+<<<<<<< HEAD
 2016-08-15  Bharathi Seshadri  <bseshadr@cisco.com>
 
 	* options.h (General_options): Add --be8 option.
@@ -208,6 +215,8 @@
 	(Output_data_plt_arm_long::do_fill_plt_entry): Likewise.
 	(Target_arm::do_adjust_elf_header): Do EF_ARM_BE8 adjustment.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-08-17  Cary Coutant  <ccoutant@gmail.com>
 
 	* i386.cc (Target_i386): Reset skip_call_tls_get_addr_ after printing

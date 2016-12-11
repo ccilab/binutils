@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2016-12-01  Luis Machado  <lgustavo@codesourcery.com>
 
 	* nm.c (sort_symbols_by_size): Don't read symbol size if symbol
@@ -403,12 +404,37 @@
 	(tg_start_block): Likewise.
 
 2016-07-01  Nick Clifton  <nickc@redhat.com>
+=======
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-07-01  Nick Clifton  <nickc@redhat.com>
+
+	* Import this patch from the mainline:
+	2016-07-01  Nick Clifton  <nickc@redhat.com>
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 	* testsuite/binutils-all/objcopy.exp
 	(objcopy_test_without_global_symbol): Expect this test to fail on
 	the AArch64 and ARM targets, since they preserve their mapping
 	symbols.
 
+<<<<<<< HEAD
+=======
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-07-01  Tristan Gingold  <gingold@adacore.com>
 
 	* NEWS: Add marker for 2.27.

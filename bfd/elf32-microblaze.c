@@ -3353,6 +3353,7 @@ microblaze_elf_finish_dynamic_sections (bfd *output_bfd,
 	      size = TRUE;
 	      break;
 
+<<<<<<< HEAD
 	    case DT_JMPREL:
 	      s = htab->elf.srelplt;
 	      size = FALSE;
@@ -3360,6 +3361,19 @@ microblaze_elf_finish_dynamic_sections (bfd *output_bfd,
 
 	    default:
 	      continue;
+=======
+              s = bfd_get_section_by_name (output_bfd, name);
+              if (s == NULL)
+                dyn.d_un.d_val = 0;
+              else
+                {
+                  if (! size)
+                    dyn.d_un.d_ptr = s->vma;
+                  else
+                    dyn.d_un.d_val = s->size;
+                }
+              bfd_elf32_swap_dyn_out (output_bfd, &dyn, dyncon);
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
             }
 
 	  if (s == NULL)

@@ -3477,7 +3477,11 @@ Target_sparc<size, big_endian>::Relocate::relocate(
 	  Reloc::gdop_lox10(view, got_offset);
 	  break;
 	}
+<<<<<<< HEAD
       // Fall through.
+=======
+      /* Fall through.  */
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
     case elfcpp::R_SPARC_GOT10:
       Reloc::lo10(view, got_offset, addend);
       break;

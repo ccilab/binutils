@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2016-12-01  Nick Clifton  <nickc@redhat.com>
 
 	PR binutils/20893
@@ -853,6 +854,12 @@
 	* arc-dis.c (find_format): Walk the linked list pointed by einsn.
 
 2016-09-14  Peter Bergner <bergner@vnet.ibm.com>
+=======
+2016-09-16  Peter Bergner <bergner@vnet.ibm.com>
+
+	Apply from master.
+	2016-09-14  Peter Bergner <bergner@vnet.ibm.com>
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 	* ppc-opc.c (powerpc_opcodes) <slbiag>: New mnemonic.
 	<addex., brd, brh, brw, lwzmx, nandxor, rldixor, setbool,
@@ -868,6 +875,7 @@
 	<paste_last>: Rename mnemonic from ...
 	<paste.>: ...to this.
 
+<<<<<<< HEAD
 2016-09-14  Anton Kolesov  <Anton.Kolesov@synopsys.com>
 
 	* arc-dis.c (arc_get_disassembler): Accept a null bfd gracefully.
@@ -1010,6 +1018,23 @@
 
 	* ft32-opc.c (ft32_opc_info): Correct mask for "callc"
 	and "jmpc".
+=======
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 2016-07-01  Jan Beulich  <jbeulich@suse.com>
 

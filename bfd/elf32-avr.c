@@ -1882,6 +1882,7 @@ elf32_avr_relax_delete_bytes (bfd *abfd,
   struct avr_relax_info *relax_info;
   struct avr_property_record *prop_record = NULL;
   bfd_boolean did_shrink = FALSE;
+  bfd_boolean did_pad = FALSE;
 
   symtab_hdr = &elf_tdata (abfd)->symtab_hdr;
   sec_shndx = _bfd_elf_section_from_bfd_section (abfd, sec);
@@ -1962,6 +1963,7 @@ elf32_avr_relax_delete_bytes (bfd *abfd,
          to remember we didn't delete anything i.e. don't set did_shrink,
          so that we don't corrupt reloc offsets or symbol values.*/
       memset (contents + toaddr - count, fill, count);
+      did_pad = TRUE;
 
       /* Adjust the TOADDR to avoid moving symbols located at the address
          of the property record, which has not moved.  */
@@ -2062,6 +2064,10 @@ elf32_avr_relax_delete_bytes (bfd *abfd,
                    bfd_vma shrink_boundary = (reloc_toaddr
                                               + sec->output_section->vma
                                               + sec->output_offset);
+<<<<<<< HEAD
+=======
+                   bfd_boolean addend_within_shrink_boundary = FALSE;
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
                    symval += sym_sec->output_section->vma
                              + sym_sec->output_offset;
@@ -2076,7 +2082,25 @@ elf32_avr_relax_delete_bytes (bfd *abfd,
                              (unsigned int) (symval + irel->r_addend),
                              (unsigned int) shrinked_insn_address);
 
+<<<<<<< HEAD
                    elf32_avr_adjust_reloc_if_spans_insn (abfd, isec, irel,
+=======
+                   /* If we padded bytes, then the boundary didn't change,
+                      so there's no need to adjust addends pointing at the boundary.
+                      If we didn't pad, then we actually shrank the boundary, so
+                      addends pointing at the boundary need to be adjusted too. */
+                    addend_within_shrink_boundary = did_pad
+                      ? ((symval + irel->r_addend) < shrink_boundary)
+                      : ((symval + irel->r_addend) <= shrink_boundary);
+
+                   if (symval <= shrinked_insn_address
+                       && (symval + irel->r_addend) > shrinked_insn_address
+                       && addend_within_shrink_boundary)
+                     {
+                       if (elf32_avr_is_diff_reloc (irel))
+                         {
+                           elf32_avr_adjust_diff_reloc_value (abfd, isec, irel,
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
                                                          symval,
                                                          shrinked_insn_address,
                                                          shrink_boundary,

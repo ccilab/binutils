@@ -4020,11 +4020,18 @@ arm_type_of_stub (struct bfd_link_info *info,
 	     PLT, use one that branches directly to the ARM PLT
 	     stub. If we pretended we'd use the pre-PLT Thumb->ARM
 	     stub, undo this now.  */
+<<<<<<< HEAD
 	  if ((branch_type == ST_BRANCH_TO_THUMB) && use_plt && !thumb_only)
 	    {
 	      branch_type = ST_BRANCH_TO_ARM;
 	      branch_offset += PLT_THUMB_STUB_SIZE;
 	    }
+=======
+	  if ((branch_type == ST_BRANCH_TO_THUMB) && use_plt && !thumb_only) {
+	    branch_type = ST_BRANCH_TO_ARM;
+	    branch_offset += PLT_THUMB_STUB_SIZE;
+	  }
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 	  if (branch_type == ST_BRANCH_TO_THUMB)
 	    {

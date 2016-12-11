@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2016-11-27  Ambrogino Modigliani  <ambrogino.modigliani@gmail.com>
 
 	* basic_blocks.c: Fix spelling in comments.
@@ -54,6 +55,23 @@
 2016-07-21  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* configure: Regenerated.
+=======
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 2016-04-20  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
 

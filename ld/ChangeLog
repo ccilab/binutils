@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2016-12-03  Alan Modra  <amodra@gmail.com>
 
 	* emultempl/ppc64elf.em (gld${EMULATION_NAME}_finish): Don't call
@@ -378,10 +379,13 @@
 
 	* emultempl/spu_ovl.o_c: Regenerate.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-10-14  Alan Modra  <amodra@gmail.com>
 
 	* scripttempl/DWARF.sc: Add .debug_addr.
 
+<<<<<<< HEAD
 2016-10-12  Alan Modra  <amodra@gmail.com>
 
 	* testsuite/ld-i386/pr19636-1d-nacl.d: Adjust for objdump change.
@@ -655,6 +659,12 @@
 	* testsuite/ld-elf/pr20528b.s: Likewise.
 
 2016-09-28  Christophe Lyon  <christophe.lyon@linaro.org>
+=======
+2016-10-10  Christophe Lyon  <christophe.lyon@linaro.org>
+
+	Backport from mainline
+	2016-09-28  Christophe Lyon  <christophe.lyon@linaro.org>
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 	PR ld/20608
 	* testsuite/ld-arm/arm-elf.exp: Handle new testcase.
@@ -663,6 +673,7 @@
 	* testsuite/ld-arm/farcall-mixed-app2.s: Likewise.
 	* testsuite/ld-arm/farcall-mixed-app2.sym: Likewise.
 
+<<<<<<< HEAD
 2016-09-26  Vlad Zakharov  <vzakhar@synopsys.com>
 
 	* Makefile.in: Regenerate.
@@ -802,6 +813,12 @@
 	as CFLAGS and CXXFLAGS respectively.
 
 2016-09-02  Senthil Kumar Selvaraj  <senthil_kumar.selvaraj@atmel.com>
+=======
+2016-09-06  Senthil Kumar Selvaraj  <senthil_kumar.selvaraj@atmel.com>
+
+	Backport from mainline
+	2016-09-02  Senthil Kumar Selvaraj  <senthil_kumar.selvaraj@atmel.com>
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 	PR ld/20545
 	* testsuite/ld-avr/avr-prop-7.d: New test.
@@ -809,6 +826,7 @@
 	* testsuite/ld-avr/avr-prop-8.d: New test.
 	* testsuite/ld-avr/avr-prop-8.s: New test.
 
+<<<<<<< HEAD
 2016-09-02  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* testsuite/ld-elf/pr20513c.d: Limit to *-*-linux* and *-*-gnu*
@@ -1131,10 +1149,13 @@
 	(check_lto_fat_available): Likewise.
 	(check_lto_shared_available): Likewise.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-08-09  Roland McGrath  <roland@hack.frob.com>
 
 	* emulparams/armelf.sh (GENERATE_PIE_SCRIPT): Set to yes.
 
+<<<<<<< HEAD
 2016-08-04  Thomas Preud'homme  <thomas.preudhomme@arm.com>
 
 	* emultempl/armelf.em (cmse_implib): Declare and define this new
@@ -1168,6 +1189,8 @@
 	* testsuite/ld-arm/cmse-veneers-no-gnu_sgstubs.out: Likewise.
 	* testsuite/ld-arm/cmse-veneers-wrong-entryfct.out: Likewise.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-08-02  Nick Clifton  <nickc@redhat.com>
 
 	PR ld/17739
@@ -1186,6 +1209,7 @@
 	* emulparams/shlelf_nto.sh: Likewise.
 	* emulparams/shlelf_nto.sh: Likewise.
 
+<<<<<<< HEAD
 2016-07-27  Maciej W. Rozycki  <macro@imgtec.com>
 
 	* testsuite/ld-mips-elf/micromips-branch-absolute.d: Update
@@ -1291,12 +1315,22 @@
 	* ldexp.c (exp_unop, exp_binop, exp_trinop, exp_nameop): Don't
 	fold expression.
 	* testsuite/ld-elf/maxpage3b.d: Expect correct maxpagesize.
+=======
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 2016-07-19  Roland McGrath  <roland@hack.frob.com>
 
 	* emulparams/aarch64elf.sh (GENERATE_PIE_SCRIPT): Set to yes.
 	* emulparams/aarch64elf32.sh: Likewise.
 
+<<<<<<< HEAD
 2016-07-19  Maciej W. Rozycki  <macro@imgtec.com>
 
 	* testsuite/ld-mips-elf/unaligned-branch-2.d: Update error
@@ -1548,6 +1582,15 @@
 	(Thumb-2 BL on ARMv6-M): New testcase.
 	* testsuite/ld-arm/thumb2-bl.d: Do not try to match testcase filename.
 	* testsuite/ld-arm/thumb2-bl.s: Do not select architecture.
+=======
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* configure: Regenerate.
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 2016-07-01  Tristan Gingold  <gingold@adacore.com>
 

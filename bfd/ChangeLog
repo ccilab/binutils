@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2016-12-03  Alan Modra  <amodra@gmail.com>
 
 	* elf64-ppc.c (struct ppc_link_hash_entry): Delete "was_undefined".
@@ -99,12 +100,15 @@
 
 	* elf.c (get_program_header_size): Revert accidental change.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-11-30  Alan Modra  <amodra@gmail.com>
 
 	PR ld/20886
 	* elf64-ppc.c (ppc64_elf_size_stubs): Make rawsize max size seen
 	on any pass past STUB_SHRINK_ITER.
 
+<<<<<<< HEAD
 2016-11-28  H.J. Lu  <hongjiu.lu@intel.com>
 
 	* elflink.c (_bfd_elf_fix_symbol_flags): Hide hidden versioned
@@ -672,12 +676,15 @@
 	* elfxx-riscv.c: New file.
 	* elfxx-riscv.h: New file.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-10-31  Alan Modra  <amodra@gmail.com>
 
 	PR 20748
 	* elf32-microblaze.c (microblaze_elf_finish_dynamic_sections): Revert
 	2016-05-13 change.
 
+<<<<<<< HEAD
 2016-10-27  Andrew Burgess  <andrew.burgess@embecosm.com>
 
 	* cpu-arc.c (arc_get_mach): Delete.
@@ -1082,11 +1089,17 @@
 	(elf_backend_update_relocs): New define.
 
 2016-09-28  Christophe Lyon  <christophe.lyon@linaro.org>
+=======
+2016-10-10  Christophe Lyon  <christophe.lyon@linaro.org>
+	Backport from mainline
+	2016-09-28  Christophe Lyon  <christophe.lyon@linaro.org>
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 	PR ld/20608
 	* elf32-arm.c (arm_type_of_stub): Handle the case when the pre-PLT
 	Thumb-ARM stub is too far.
 
+<<<<<<< HEAD
 2016-09-27  Nick Clifton  <nickc@redhat.com>
 
 	PR ld/20634
@@ -1170,6 +1183,12 @@
 	relocation with copy relocation when building executable.
 
 2016-09-02  Senthil Kumar Selvaraj  <senthil_kumar.selvaraj@atmel.com>
+=======
+2016-09-06  Senthil Kumar Selvaraj  <senthil_kumar.selvaraj@atmel.com>
+
+	Backport from mainline
+	2016-09-02  Senthil Kumar Selvaraj  <senthil_kumar.selvaraj@atmel.com>
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 	PR ld/20545
 	* elf32-avr.c (elf32_avr_relax_delete_bytes): Add parameter
@@ -1179,18 +1198,22 @@
 	(elf32_avr_relax_section): Modify calls to
 	elf32_avr_relax_delete_bytes to pass extra parameter.
 
+<<<<<<< HEAD
 2016-09-01  Thomas Preud'homme  <thomas.preudhomme@arm.com>
 
 	* elf32-arm.c (cmse_entry_fct_p): Store instruction encoding in an
 	array of bytes and use bfd_get_16 to interpret its encoding according
 	to endianness of target.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-09-01  Alan Modra  <amodra@gmail.com>
 
 	* elf64-ppc.c (synthetic_opd): New static var.
 	(compare_symbols): Don't treat symbols in .opd specially for ELFv2.
 	(ppc64_elf_get_synthetic_symtab): Likewise.  Comment.
 
+<<<<<<< HEAD
 2016-08-31  Alan Modra  <amodra@gmail.com>
 
 	* elf64-ppc.c (group_sections): Delete stub14_group_size.  Instead,
@@ -1206,11 +1229,14 @@
 	split on non-exec sections differing in SHF_PPC_VLE.  When
 	splitting segments, mark size invalid.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-08-30  Alan Modra  <amodra@gmail.com>
 
 	PR 20531
 	* elf32-ppc.c (_bfd_elf_ppc_set_arch): Add missing "break".
 
+<<<<<<< HEAD
 2016-08-29  H.J. Lu  <hongjiu.lu@intel.com>
 
 	PR ld/14961
@@ -1393,6 +1419,8 @@
 	(ppc64_elf_relocate_section): Simplify condition under which
 	dyn_relocs are emitted.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-08-19  Alan Modra  <amodra@gmail.com>
 
 	PR 20472
@@ -1411,18 +1439,22 @@
 	(ppc64_elf_relocate_section): Match condition under which
 	dyn_relocs are emitted to that in allocate_dynrelocs.
 
+<<<<<<< HEAD
 2016-08-12  Alan Modra  <amodra@gmail.com>
 
 	* elf-bfd.h (struct elf_link_hash_table): Add local_dynsymcount.
 	* elflink.c (_bfd_elf_link_renumber_dynsyms): Set local_dynsymcount.
 	(bfd_elf_final_link): Set .dynsym sh_info from local_dynsymcount.
 
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-08-11  Alan Modra  <amodra@gmail.com>
 
 	* elf64-ppc.c (ppc64_elf_adjust_dynamic_symbol): Don't exit with
 	non_got_ref true in any case where we could have generated dynbss
 	copies but decide not to do so.
 
+<<<<<<< HEAD
 2016-08-10  Maciej W. Rozycki  <macro@imgtec.com>
 
 	* elfxx-mips.c (mips_elf_add_la25_stub): Clear the ISA bit of
@@ -1498,12 +1530,38 @@
 	Set stub_changed to TRUE if such veneers were created.
 	(elf32_arm_swap_symbol_in): Add detection code for CMSE special
 	symbols.
+=======
+2016-08-02  Nick Clifton  <nickc@redhat.com>
+
+	PR ld/17739
+	* elf32-sh.c (sh_elf_gc_sweep_hook): Delete.
+	(elf_backend_sweep_hook): Delete.
+
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* version.m4: Bump version to 2.27.0
+	* configure: Regenerate.
+
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* development.sh: Set development to true.
+
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* version.m4: Bump version to 2.27
+	* configure: Regenerate.
+
+2016-08-03  Tristan Gingold  <gingold@adacore.com>
+
+	* development.sh: Set development to false.
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 2016-08-02  Alan Modra  <amodra@gmail.com>
 
 	PR ld/20428
 	* elf64-ppc.c (ppc_get_stub_entry): Don't segfault on NULL group.
 
+<<<<<<< HEAD
 2016-08-02  Nick Clifton  <nickc@redhat.com>
 
 	PR ld/17739
@@ -1522,12 +1580,19 @@
 	* po/sv.po: Updated Swedish translation.
 
 2016-07-27  Ozkan Sezer  <sezeroz@gmail.com>
+=======
+2016-07-27  Nick Clifton  <nickc@redhat.com>
+
+	* Import this patch from the mainline:
+	2016-07-27  Ozkan Sezer  <sezeroz@gmail.com>
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 	    Nick Clifton  <nickc@redhat.com>
 
 	PR ld/20401
 	* coffgen.c (fini_reloc_cookie_rels): Check for the extistence
 	of the coff_section_data before using it.
 
+<<<<<<< HEAD
 2016-07-26  Maciej W. Rozycki  <macro@imgtec.com>
 
 	* elfxx-mips.c (mips_elf_calculate_relocation): Handle branches
@@ -1737,6 +1802,17 @@
 	checked for BL range.
 	(elf32_arm_final_link_relocate): Use using_thumb2_bl () to determine
 	the bit size of BL offset.
+=======
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* version.m4: Bump version to 2.26.90
+	* configure: Regenerate.
+
+2016-07-01  Tristan Gingold  <gingold@adacore.com>
+
+	* version.m4: Bump version to 2.27.51
+	* configure: Regenerate.
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 
 2016-06-29  Nick Clifton  <nickc@redhat.com>
 
