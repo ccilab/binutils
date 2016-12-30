@@ -2222,7 +2222,7 @@ mips_elf32_rtype_to_howto (unsigned int r_type,
         return &elf_mips16_howto_table_rel[r_type - R_MIPS16_min];
       if (r_type >= (unsigned int) R_MIPS_max)
 	{
-	  (*_bfd_error_handler) (_("Unrecognised MIPS reloc number: %d"), r_type);
+	  _bfd_error_handler (_("Unrecognised MIPS reloc number: %d"), r_type);
 	  bfd_set_error (bfd_error_bad_value);
 	  r_type = R_MIPS_NONE;
 	}
@@ -2617,6 +2617,8 @@ mips_vxworks_final_write_processing (bfd *abfd, bfd_boolean linker)
 #define elf_backend_default_use_rela_p		1
 #undef elf_backend_got_header_size
 #define elf_backend_got_header_size		(4 * 3)
+#undef elf_backend_dtrel_excludes_plt
+#define elf_backend_dtrel_excludes_plt		1
 
 #undef elf_backend_finish_dynamic_symbol
 #define elf_backend_finish_dynamic_symbol \

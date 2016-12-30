@@ -64,10 +64,8 @@
 		  " exe addr %" PRIx64,					\
 		  __LINE__, aarch64_get_PC (cpu));			\
       if (! TRACE_ANY_P (cpu))						\
-	{								\
-	  sim_io_eprintf (CPU_STATE (cpu), "SIM Error: Unimplemented instruction: "); \
-	  trace_disasm (CPU_STATE (cpu), cpu, aarch64_get_PC (cpu));	\
-	}								\
+        sim_io_eprintf (CPU_STATE (cpu), "SIM Error: Unimplemented instruction: %#08x\n", \
+                        aarch64_get_instr (cpu));			\
       sim_engine_halt (CPU_STATE (cpu), cpu, NULL, aarch64_get_PC (cpu),\
 		       sim_stopped, SIM_SIGABRT);			\
     }									\
@@ -7499,8 +7497,8 @@ fsturs (sim_cpu *cpu, int32_t offset)
   unsigned int st = INSTR (4, 0);
 
   TRACE_DECODE (cpu, "emulated at line %d", __LINE__);
-  aarch64_set_mem_u32 (cpu, aarch64_get_reg_u64 (cpu, st, 1) + offset,
-		       aarch64_get_vec_u32 (cpu, rn, 0));
+  aarch64_set_mem_u32 (cpu, aarch64_get_reg_u64 (cpu, rn, 1) + offset,
+		       aarch64_get_vec_u32 (cpu, st, 0));
 }
 
 /* Store 64 bit unscaled signed 9 bit.  */
@@ -7511,8 +7509,8 @@ fsturd (sim_cpu *cpu, int32_t offset)
   unsigned int st = INSTR (4, 0);
 
   TRACE_DECODE (cpu, "emulated at line %d", __LINE__);
-  aarch64_set_mem_u64 (cpu, aarch64_get_reg_u64 (cpu, st, 1) + offset,
-		       aarch64_get_vec_u64 (cpu, rn, 0));
+  aarch64_set_mem_u64 (cpu, aarch64_get_reg_u64 (cpu, rn, 1) + offset,
+		       aarch64_get_vec_u64 (cpu, st, 0));
 }
 
 /* Store 128 bit unscaled signed 9 bit.  */
@@ -7524,9 +7522,9 @@ fsturq (sim_cpu *cpu, int32_t offset)
   FRegister a;
 
   TRACE_DECODE (cpu, "emulated at line %d", __LINE__);
-  aarch64_get_FP_long_double (cpu, rn, & a);
+  aarch64_get_FP_long_double (cpu, st, & a);
   aarch64_set_mem_long_double (cpu,
-			       aarch64_get_reg_u64 (cpu, st, 1)
+			       aarch64_get_reg_u64 (cpu, rn, 1)
 			       + offset, a);
 }
 
@@ -7754,7 +7752,7 @@ fsqrts (sim_cpu *cpu)
   unsigned sd = INSTR (4, 0);
 
   TRACE_DECODE (cpu, "emulated at line %d", __LINE__);
-  aarch64_set_FP_float (cpu, sd, sqrt (aarch64_get_FP_float (cpu, sn)));
+  aarch64_set_FP_float (cpu, sd, sqrtf (aarch64_get_FP_float (cpu, sn)));
 }
 
 /* Double square root.  */
@@ -13165,7 +13163,8 @@ bl (sim_cpu *cpu, int32_t offset)
 		    " %*scall %" PRIx64 " [%s]"
 		    " [args: %" PRIx64 " %" PRIx64 " %" PRIx64 "]",
 		    stack_depth, " ", aarch64_get_next_PC (cpu),
-		    aarch64_get_func (aarch64_get_next_PC (cpu)),
+		    aarch64_get_func (CPU_STATE (cpu),
+				      aarch64_get_next_PC (cpu)),
 		    aarch64_get_reg_u64 (cpu, 0, NO_SP),
 		    aarch64_get_reg_u64 (cpu, 1, NO_SP),
 		    aarch64_get_reg_u64 (cpu, 2, NO_SP)
@@ -13204,7 +13203,8 @@ blr (sim_cpu *cpu)
 		    " %*scall %" PRIx64 " [%s]"
 		    " [args: %" PRIx64 " %" PRIx64 " %" PRIx64 "]",
 		    stack_depth, " ", aarch64_get_next_PC (cpu),
-		    aarch64_get_func (aarch64_get_next_PC (cpu)),
+		    aarch64_get_func (CPU_STATE (cpu),
+				      aarch64_get_next_PC (cpu)),
 		    aarch64_get_reg_u64 (cpu, 0, NO_SP),
 		    aarch64_get_reg_u64 (cpu, 1, NO_SP),
 		    aarch64_get_reg_u64 (cpu, 2, NO_SP)
@@ -14104,10 +14104,15 @@ aarch64_run (SIM_DESC sd)
   sim_cpu *cpu = STATE_CPU (sd, 0);
 
   while (aarch64_step (cpu))
-    aarch64_update_PC (cpu);
+    {
+      aarch64_update_PC (cpu);
 
-  sim_engine_halt (sd, NULL, NULL, aarch64_get_PC (cpu),
-		   sim_exited, aarch64_get_reg_s32 (cpu, R0, SP_OK));
+      if (sim_events_tick (sd))
+	sim_events_process (sd);
+    }
+
+  sim_engine_halt (sd, cpu, NULL, aarch64_get_PC (cpu),
+		   sim_exited, aarch64_get_reg_s32 (cpu, R0, NO_SP));
 }
 
 void

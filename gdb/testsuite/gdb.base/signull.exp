@@ -36,7 +36,7 @@ if [target_info exists gdb,nosignals] {
 standard_testfile .c
 
 if { [gdb_compile "${srcdir}/${subdir}/${srcfile}" "${binfile}" executable {debug}] != "" } {
-    untested signull.exp
+    untested "failed to compile"
     return -1
 }
 
@@ -57,7 +57,7 @@ if ![runto_main] then {
 # case.
 
 if { [is_address_zero_readable] } {
-    untested "Memory at address 0 is possibly executable"
+    untested "memory at address 0 is possibly executable"
     return
 }
 

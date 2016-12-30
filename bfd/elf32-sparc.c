@@ -67,8 +67,9 @@ elf32_sparc_grok_psinfo (bfd *abfd, Elf_Internal_Note *note)
    object file when linking.  */
 
 static bfd_boolean
-elf32_sparc_merge_private_bfd_data (bfd *ibfd, bfd *obfd)
+elf32_sparc_merge_private_bfd_data (bfd *ibfd, struct bfd_link_info *info)
 {
+  bfd *obfd = info->output_bfd;
   bfd_boolean error;
   unsigned long ibfd_mach;
   /* FIXME: This should not be static.  */
@@ -84,7 +85,7 @@ elf32_sparc_merge_private_bfd_data (bfd *ibfd, bfd *obfd)
   if (bfd_mach_sparc_64bit_p (ibfd_mach))
     {
       error = TRUE;
-      (*_bfd_error_handler)
+      _bfd_error_handler
 	(_("%B: compiled for a 64 bit system and target is 32 bit"), ibfd);
     }
   else if ((ibfd->flags & DYNAMIC) == 0)
@@ -97,7 +98,7 @@ elf32_sparc_merge_private_bfd_data (bfd *ibfd, bfd *obfd)
        != previous_ibfd_e_flags)
       && previous_ibfd_e_flags != (unsigned long) -1)
     {
-      (*_bfd_error_handler)
+      _bfd_error_handler
 	(_("%B: linking little endian files with big endian files"), ibfd);
       error = TRUE;
     }
@@ -109,7 +110,7 @@ elf32_sparc_merge_private_bfd_data (bfd *ibfd, bfd *obfd)
       return FALSE;
     }
 
-  return _bfd_sparc_elf_merge_private_bfd_data (ibfd, obfd);
+  return _bfd_sparc_elf_merge_private_bfd_data (ibfd, info);
 }
 
 /* The final processing done just before writing out the object file.
@@ -331,6 +332,8 @@ elf32_sparc_vxworks_final_write_processing (bfd *abfd, bfd_boolean linker)
 #define elf_backend_plt_readonly		1
 #undef  elf_backend_got_header_size
 #define elf_backend_got_header_size		12
+#undef  elf_backend_dtrel_excludes_plt
+#define elf_backend_dtrel_excludes_plt		1
 #undef  elf_backend_add_symbol_hook
 #define elf_backend_add_symbol_hook \
   elf_vxworks_add_symbol_hook

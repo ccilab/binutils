@@ -25,7 +25,6 @@
 fragment <<EOF
 
 #include "ldctor.h"
-#include "libbfd.h"
 #include "elf-bfd.h"
 #include "elf64-ppc.h"
 #include "ldlex.h"
@@ -593,7 +592,6 @@ gld${EMULATION_NAME}_finish (void)
   if (msg != NULL)
     free (msg);
 
-  ppc64_elf_restore_symbols (&link_info);
   finish_default ();
 }
 

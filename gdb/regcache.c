@@ -742,6 +742,19 @@ regcache_raw_write_unsigned (struct regcache *regcache, int regnum,
   regcache_raw_write (regcache, regnum, buf);
 }
 
+LONGEST
+regcache_raw_get_signed (struct regcache *regcache, int regnum)
+{
+  LONGEST value;
+  enum register_status status;
+
+  status = regcache_raw_read_signed (regcache, regnum, &value);
+  if (status == REG_UNAVAILABLE)
+    throw_error (NOT_AVAILABLE_ERROR,
+		 _("Register %d is not available"), regnum);
+  return value;
+}
+
 enum register_status
 regcache_cooked_read (struct regcache *regcache, int regnum, gdb_byte *buf)
 {
@@ -890,6 +903,17 @@ regcache_cooked_write_unsigned (struct regcache *regcache, int regnum,
   regcache_cooked_write (regcache, regnum, buf);
 }
 
+/* See regcache.h.  */
+
+void
+regcache_raw_set_cached_value (struct regcache *regcache, int regnum,
+			       const gdb_byte *buf)
+{
+  memcpy (register_buffer (regcache, regnum), buf,
+	  regcache->descr->sizeof_register[regnum]);
+  regcache->register_status[regnum] = REG_VALID;
+}
+
 void
 regcache_raw_write (struct regcache *regcache, int regnum,
 		    const gdb_byte *buf)
@@ -917,9 +941,7 @@ regcache_raw_write (struct regcache *regcache, int regnum,
   inferior_ptid = regcache->ptid;
 
   target_prepare_to_store (regcache);
-  memcpy (register_buffer (regcache, regnum), buf,
-	  regcache->descr->sizeof_register[regnum]);
-  regcache->register_status[regnum] = REG_VALID;
+  regcache_raw_set_cached_value (regcache, regnum, buf);
 
   /* Register a cleanup function for invalidating the register after it is
      written, in case of a failure.  */

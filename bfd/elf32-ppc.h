@@ -48,6 +48,11 @@ struct ppc_elf_params
   /* The bfd backend detected a non-PIC reference to a protected symbol
      defined in a shared library.  */
   int pic_fixup;
+
+  /* Relocate 16A relocs as 16D and vice versa.  */
+  int vle_reloc_fixup;
+
+  bfd_vma pagesize;
 };
 
 void ppc_elf_link_params (struct bfd_link_info *, struct ppc_elf_params *);

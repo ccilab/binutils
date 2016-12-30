@@ -22,6 +22,8 @@
 #define UTILS_H
 
 #include "exceptions.h"
+#include "common/scoped_restore.h"
+#include <chrono>
 
 extern void initialize_utils (void);
 
@@ -50,7 +52,7 @@ extern const char *gdb_bfd_errmsg (bfd_error_type error_tag, char **matching);
 /* Reset the prompt_for_continue clock.  */
 void reset_prompt_for_continue_wait_time (void);
 /* Return the time spent in prompt_for_continue.  */
-struct timeval get_prompt_for_continue_wait_time (void);
+std::chrono::steady_clock::duration get_prompt_for_continue_wait_time ();
 
 /* Parsing utilites.  */
 
@@ -63,9 +65,6 @@ char **gdb_buildargv (const char *);
 /* Cleanup utilities.  */
 
 extern struct cleanup *make_cleanup_freeargv (char **);
-
-struct dyn_string;
-extern struct cleanup *make_cleanup_dyn_string_delete (struct dyn_string *);
 
 struct ui_file;
 extern struct cleanup *make_cleanup_ui_file_delete (struct ui_file *);
@@ -92,12 +91,6 @@ extern struct cleanup *make_cleanup_restore_uinteger (unsigned int *variable);
 
 struct target_ops;
 extern struct cleanup *make_cleanup_unpush_target (struct target_ops *ops);
-
-
-extern struct cleanup *
-  make_cleanup_restore_ui_out (struct ui_out **variable);
-extern struct cleanup *
-  make_cleanup_restore_ui_file (struct ui_file **variable);
 
 extern struct cleanup *make_cleanup_value_free_to_mark (struct value *);
 extern struct cleanup *make_cleanup_value_free (struct value *);
@@ -153,7 +146,7 @@ extern int yquery (const char *, ...) ATTRIBUTE_PRINTF (1, 2);
 
 extern void begin_line (void);
 
-extern void wrap_here (char *);
+extern void wrap_here (const char *);
 
 extern void reinitialize_more_filter (void);
 

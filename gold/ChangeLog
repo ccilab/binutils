@@ -1,9 +1,200 @@
+<<<<<<< HEAD
+2016-12-01  Cary Coutant  <ccoutant@gmail.com>
+
+	PR gold/20717
+	* script-sections.cc (Script_sections): Set *keep to false when
+	no match.
+
+2016-12-01  Cary Coutant  <ccoutant@gmail.com>
+
+	PR gold/20834
+	* target.h (Target::default_text_segment_address): Bump default
+	start address up to ABI page size.
+
+2016-12-01  Cary Coutant  <ccoutant@gmail.com>
+
+	PR gold/18989
+	* options.cc (General_options::object_format_to_string): New function.
+	(General_options::copy_from_posdep_options): New function.
+	(General_options::parse_push_state): New function.
+	(General_options::parse_pop_state): New function.
+	* options.h (--push-state, --pop-state): New options.
+	(General_options::object_format_to_string): New method.
+	(General_options::set_incremental_disposition): New method.
+	(General_options::copy_from_posdep_options): New method.
+	(General_options::options_stack_): New data member.
+
+2016-12-01  Cary Coutant  <ccoutant@gmail.com>
+
+	PR gold/20807
+	* aarch64.cc (Target_aarch64::scan_reloc_section_for_stubs): Handle
+	section symbols correctly.
+	* arm.cc (Target_arm): Likewise.
+	* powerpc.cc (Target_powerpc): Likewise.
+
+2016-11-27  Ambrogino Modigliani  <ambrogino.modigliani@gmail.com>
+
+	* aarch64-reloc.def: Fix spelling in comments.
+
+2016-11-27  Ambrogino Modigliani  <ambrogino.modigliani@gmail.com>
+
+	* aarch64.cc: Fix spelling in comments.
+	* arm.cc: Fix spelling in comments.
+	* icf.cc: Fix spelling in comments.
+	* layout.cc: Fix spelling in comments.
+	* layout.h: Fix spelling in comments.
+	* mips.cc: Fix spelling in comments.
+	* output.h: Fix spelling in comments.
+	* plugin.h: Fix spelling in comments.
+	* script-sections.h: Fix spelling in comments.
+	* script.h: Fix spelling in comments.
+	* stringpool.h: Fix spelling in comments.
+	* tilegx.cc: Fix spelling in comments.
+
+2016-11-22  Cary Coutant  <ccoutant@gmail.com>
+
+	PR gold/20346
+	* options.cc (One_option::print): Print "(default)" when appropriate.
+	* options.h: Clean up and re-sort options.
+	(One_option::is_default): New data member.
+	(One_option::One_option): Add is_default parameter; adjust all calls.
+	(DEFINE_var): Add is_default__ parameter; adjust all calls.
+	(DEFINE_bool): Set is_default based on default_value__.
+	(DEFINE_bool_ignore): New macro.
+	(--no-eh-frame-hdr): New option.
+	(--enable-new-dtags): Remove mention of DT_FLAGS.
+
+2016-11-22  Ambrogino Modigliani  <ambrogino.modigliani@gmail.com>
+
+        * configure: Regenerate.
+
+2016-11-21  Cary Coutant  <ccoutant@gmail.com>
+
+	PR gold/20693
+	* gold.cc (queue_middle_tasks): Force valid target earlier.
+
+2016-11-21  Igor Kudrin  <ikudrin@accesssoftek.com>
+
+	* layout.cc: Include windows.h and rpcdce.h (for MinGW32).
+	(Layout::create_build_id): Generate uuid using UuidCreate().
+
+2016-11-04  Loïc Yhuel <loic.yhuel@softathome.com>
+
+	* configure.ac: add missing '$'.
+	* configure: Regenerate.
+
+2016-10-21  Gergely Nagy  <ngg@tresorit.com>
+
+	PR gold/17704
+	* icf.cc (match_sections): Add new parameter section_addraligns.
+	Check section alignment and keep the section with the strictest
+	alignment.
+	(find_identical_sections): New local variable section_addraligns.
+	Store each section's alignment.
+	* testsuite/pr17704a_test.s: New file.
+	* testsuite/Makefile.am (pr17704a_test): New test.
+	* testsuite/Makefile.in: Regenerate.
+
+2016-10-06  Alan Modra  <amodra@gmail.com>
+
+	* powerpc.cc (Target_powerpc::Relocate::relocate): Add fall
+	through comment.
+	* tilegx.cc (Target_tilegx::Relocate::relocate): Likewise.
+
+2016-10-06  Alan Modra  <amodra@gmail.com>
+
+	* aarch64.cc: Spell fall through comments as "// Fall through.".
+	* arm.cc: Likewise.
+	* mips.cc: Likewise.
+	* powerpc.cc: Likewise.
+	* s390.cc: Likewise.
+	* sparc.cc: Likewise.
+	* x86_64.cc: Likewise.
+	* powerpc.cc (Target_powerpc::Relocate::relocate): Add missing
+	fall through comments.
+	* sparc.cc: (Target_sparc::Scan::global): Likewise.
+	(Target_sparc::Relocate::relocate): Likewise.
+	* tilegx.cc (Target_tilegx::Relocate::relocate): Likewise.
+	* resolve.cc (symbol_to_bits): Add missing break.
+
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-09-26  Cary Coutant  <ccoutant@gmail.com>
 
 	PR gold/20238
 	* symtab.cc (Symbol_table::define_default_version): Check that
 	unversioned symbol is defined.
 
+<<<<<<< HEAD
+2016-09-26  Vlad Zakharov  <vzakhar@synopsys.com>
+
+	* Makefile.in: Regenerate.
+	* configure: Likewise.
+	* testsuite/Makefile.in: Likewise.
+
+2016-09-26  Alan Modra  <amodra@gmail.com>
+
+	* aarch64.cc (Target_aarch64::is_erratum_835769_sequence): Avoid
+	compiler warning.
+	* output.cc (Output_segment::set_section_addresses): Likewise.
+	* testsuite/Makefile.in: Regenerate.
+
+2016-09-02  Doug Kwan  <dougkwan@google.com>
+
+        * arm.cc (Target_arm::Target_arm): Move method definition outside of
+        class definition.  Add code to handle --target1-rel, --target1-abs
+        and --target2= options.
+        (Target_arm::get_reloc_reloc_type): Change method to be non-static
+        and const.
+        (Target_arm::target1_is_rel_, Target_arm::target2_reloc_): New data
+        member declaration.
+        (Target_arm::Scan::local, Target_arm::Scan::global,
+        Target_arm::Relocate::relocate,
+        Target_arm::Relocatable_size_for_reloc::get_size_for_reloc): Adjust
+        call to Target_arm::get_real_reloc_type.
+        (Target_arm::get_real_reloc_type): Use command line options to
+        determine real types of R_ARM_TARGET1 and R_ARM_TARGET2.
+        * options.h (--target1-rel, --target1-abs, --target2): New ARM-only
+        options.
+
+2016-08-31  Alan Modra  <amodra@gmail.com>
+
+	* powerpc.cc (class Stub_control): Delete stub14_group_size_
+	and has14_.  Add group_size_.
+	(Stub_control::can_add_to_stub_group): Adjust to suit.  Print
+	debug info when switching to adding sections before stubs.
+
+2016-08-31  Alan Modra  <amodra@gmail.com>
+
+	* debug.h (DEBUG_TARGET): New.
+	(DEBUG_ALL): Add DEBUG_TARGET.
+	(gold_debug): Delete FORMAT param.
+	* powerpc.cc (Stub_control::can_add_to_stub_group): Print debug ourput.
+
+2016-08-30  Alan Modra  <amodra@gmail.com>
+
+	PR 20523
+	* powerpc.cc (class Stub_control): Add has14_.  Comment owner_.
+	(Stub_control::can_add_to_stub_group): Correct grouping of
+	sections containing 14-bit external branches.  When returning
+	false, set state_ to reflect the fact that we have one section
+	for the next group.  Rewrite most of function for clarity.
+	Add and expand comments.
+	(Target_powerpc::do_relax): Print stub group size retry in hex.
+
+2016-08-26  Han Shen  <shenhan@google.com>
+
+	PR gold/20529 - relaxing loop never ends.
+
+	* powerpc.cc (Stub_table::min_size_threshold_): New member to
+	limit size.
+	(Stub_table::set_min_size_threshold): New member function.
+	(Stub_table::set_address_and_size): Add code to only allow size
+	increase.
+	(Target_powerpc::do_relax): Add code to record last size.
+
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-08-23  Roland McGrath  <roland@hack.frob.com>
 
 	* options.h (General_options): Grok -z stack-size.
@@ -14,6 +205,18 @@
 	(Layout::set_segment_offsets): Don't call ->set_offset on the
 	PT_GNU_STACK segment.
 
+<<<<<<< HEAD
+2016-08-15  Bharathi Seshadri  <bseshadr@cisco.com>
+
+	* options.h (General_options): Add --be8 option.
+	* arm.cc (Arm_relobj::do_relocate_sections): Add code to swap for be8.
+	(Output_data_plt_arm_standard::do_fill_first_plt_entry): Likewise.
+	(Output_data_plt_arm_short::do_fill_plt_entry): Likewise.
+	(Output_data_plt_arm_long::do_fill_plt_entry): Likewise.
+	(Target_arm::do_adjust_elf_header): Do EF_ARM_BE8 adjustment.
+
+=======
+>>>>>>> 57d9eb21a3938888c22032c2a8fbbc138cf90a63
 2016-08-17  Cary Coutant  <ccoutant@gmail.com>
 
 	* i386.cc (Target_i386): Reset skip_call_tls_get_addr_ after printing

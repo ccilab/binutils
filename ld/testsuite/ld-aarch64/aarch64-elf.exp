@@ -189,6 +189,7 @@ run_dump_test "farcall-bl-section"
 run_dump_test "tls-relax-all"
 run_dump_test "tls-relax-gd-le"
 run_dump_test "tls-relax-gdesc-le"
+run_dump_test "tls-relax-gd-ie-ilp32"
 run_dump_test "tls-relax-gd-ie"
 run_dump_test "tls-relax-large-gd-ie"
 run_dump_test "tls-relax-large-gd-ie-be"
@@ -286,6 +287,8 @@ run_dump_test "plt_mapping_symbol"
 run_dump_test "rela-abs-relative"
 run_dump_test "rela-abs-relative-be"
 run_dump_test "rela-abs-relative-opt"
+
+run_dump_test "pie-bind-locally"
 
 set aarch64elflinktests {
   {"ld-aarch64/so with global symbol" "-shared" "" "" {copy-reloc-so.s}

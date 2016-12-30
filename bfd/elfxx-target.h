@@ -223,7 +223,7 @@
 #endif
 #ifndef bfd_elfNN_bfd_merge_private_bfd_data
 #define bfd_elfNN_bfd_merge_private_bfd_data \
-  ((bfd_boolean (*) (bfd *, bfd *)) bfd_true)
+  ((bfd_boolean (*) (bfd *, struct bfd_link_info *)) bfd_true)
 #endif
 #ifndef bfd_elfNN_bfd_set_private_flags
 #define bfd_elfNN_bfd_set_private_flags \
@@ -479,6 +479,10 @@
 #ifndef elf_backend_modify_program_headers
 #define elf_backend_modify_program_headers	0
 #endif
+#ifndef elf_backend_allow_non_load_phdr
+#define elf_backend_allow_non_load_phdr	\
+  ((bfd_boolean (*) (bfd *, const Elf_Internal_Phdr *, unsigned)) bfd_false)
+#endif
 #ifndef elf_backend_ecoff_debug_swap
 #define elf_backend_ecoff_debug_swap	0
 #endif
@@ -524,11 +528,14 @@
 #ifndef elf_backend_output_arch_syms
 #define elf_backend_output_arch_syms		NULL
 #endif
+#ifndef elf_backend_filter_implib_symbols
+#define elf_backend_filter_implib_symbols	NULL
+#endif
 #ifndef elf_backend_copy_indirect_symbol
-#define elf_backend_copy_indirect_symbol  _bfd_elf_link_hash_copy_indirect
+#define elf_backend_copy_indirect_symbol	_bfd_elf_link_hash_copy_indirect
 #endif
 #ifndef elf_backend_hide_symbol
-#define elf_backend_hide_symbol		_bfd_elf_link_hash_hide_symbol
+#define elf_backend_hide_symbol			_bfd_elf_link_hash_hide_symbol
 #endif
 #ifndef elf_backend_fixup_symbol
 #define elf_backend_fixup_symbol		NULL
@@ -544,6 +551,9 @@
 #endif
 #ifndef elf_backend_emit_relocs
 #define elf_backend_emit_relocs			_bfd_elf_link_output_relocs
+#endif
+#ifndef elf_backend_update_relocs
+#define elf_backend_update_relocs		NULL
 #endif
 #ifndef elf_backend_count_relocs
 #define elf_backend_count_relocs		NULL
@@ -626,6 +636,10 @@
 #define elf_backend_rela_normal 0
 #endif
 
+#ifndef elf_backend_dtrel_excludes_plt
+#define elf_backend_dtrel_excludes_plt 0
+#endif
+
 #ifndef elf_backend_plt_sym_val
 #define elf_backend_plt_sym_val NULL
 #endif
@@ -654,7 +668,7 @@
 #endif
 
 #ifndef elf_backend_link_order_error_handler
-#define elf_backend_link_order_error_handler _bfd_default_error_handler
+#define elf_backend_link_order_error_handler _bfd_error_handler
 #endif
 
 #ifndef elf_backend_common_definition
@@ -755,6 +769,7 @@ static struct elf_backend_data elfNN_bed =
   elf_backend_additional_program_headers,
   elf_backend_modify_segment_map,
   elf_backend_modify_program_headers,
+  elf_backend_allow_non_load_phdr,
   elf_backend_gc_keep,
   elf_backend_gc_mark_dynamic_ref,
   elf_backend_gc_mark_hook,
@@ -764,6 +779,7 @@ static struct elf_backend_data elfNN_bed =
   elf_backend_print_symbol_all,
   elf_backend_output_arch_local_syms,
   elf_backend_output_arch_syms,
+  elf_backend_filter_implib_symbols,
   elf_backend_copy_indirect_symbol,
   elf_backend_hide_symbol,
   elf_backend_fixup_symbol,
@@ -771,6 +787,7 @@ static struct elf_backend_data elfNN_bed =
   elf_backend_get_target_dtag,
   elf_backend_ignore_undef_symbol,
   elf_backend_emit_relocs,
+  elf_backend_update_relocs,
   elf_backend_count_relocs,
   elf_backend_count_additional_relocs,
   elf_backend_sort_relocs_p,
@@ -827,6 +844,7 @@ static struct elf_backend_data elfNN_bed =
   elf_backend_default_use_rela_p,
   elf_backend_rela_plts_and_copies_p,
   elf_backend_rela_normal,
+  elf_backend_dtrel_excludes_plt,
   elf_backend_sign_extend_vma,
   elf_backend_want_got_plt,
   elf_backend_plt_readonly,

@@ -1131,6 +1131,12 @@ x86_64_overflow_pc32.err: x86_64_overflow_pc32.o gcctestdir/ld
 	  exit 1; \
 	fi
 
+check_PROGRAMS += pr17704a_test
+pr17704a_test.o: pr17704a_test.s
+	$(TEST_AS) --64  -o $@ $<
+pr17704a_test: pr17704a_test.o gcctestdir/ld
+	gcctestdir/ld --icf=all -o $@ $<
+
 check_SCRIPTS += x32_overflow_pc32.sh
 check_DATA += x32_overflow_pc32.err
 MOSTLYCLEANFILES += x32_overflow_pc32.err
@@ -3604,6 +3610,52 @@ arm_farcall_thumb_arm_5t.o: arm_farcall_thumb_arm.s
 
 MOSTLYCLEANFILES += arm_farcall_thumb_arm arm_farcall_thumb_arm_5t
 
+# Check handling of --target1-abs, --target1-rel and --target2 options
+
+check_SCRIPTS += arm_target1_abs.sh arm_target1_rel.sh \
+		 arm_target2_rel.sh arm_target2_abs.sh arm_target2_got_rel.sh
+check_DATA += arm_target1_abs.stdout arm_target1_rel.stdout \
+	      arm_target2_rel.stdout arm_target2_abs.stdout arm_target2_got_rel.stdout
+
+arm_target1_abs.stdout: arm_target1_abs
+	$(TEST_OBJDUMP) -s $< > $@
+
+arm_target1_abs: arm_target1.o ../ld-new
+	../ld-new --target1-abs --section-start .text=0x8000 -o $@ $<
+
+arm_target1_rel.stdout: arm_target1_rel
+	$(TEST_OBJDUMP) -s $< > $@
+
+arm_target1_rel: arm_target1.o ../ld-new
+	../ld-new --target1-rel --section-start .text=0x8000 -o $@ $<
+
+arm_target1.o: arm_target1.s
+	$(TEST_AS) -o $@ $<
+
+arm_target2_rel.stdout: arm_target2_rel
+	$(TEST_OBJDUMP) -s $< > $@
+
+arm_target2_rel: arm_target2.o ../ld-new
+	../ld-new --target2=rel --section-start .text=0x8000 -o $@ $<
+
+arm_target2_abs.stdout: arm_target2_abs
+	$(TEST_OBJDUMP) -s $< > $@
+
+arm_target2_abs: arm_target2.o ../ld-new
+	../ld-new --target2=abs --section-start .text=0x8000 -o $@ $<
+
+arm_target2_got_rel.stdout: arm_target2_got_rel
+	$(TEST_OBJDUMP) -s $< > $@
+
+arm_target2_got_rel: arm_target2.o ../ld-new
+	../ld-new --target2=got-rel --section-start .text=0x8000 --section-start .got=0x9000 -o $@ $<
+
+arm_target2.o: arm_target2.s
+	$(TEST_AS) -o $@ $<
+
+MOSTLYCLEANFILES += arm_target1_abs arm_target1_rel \
+		    arm_target2_rel arm_target2_abs arm_target2_got_rel
+
 endif DEFAULT_TARGET_ARM
 
 if DEFAULT_TARGET_AARCH64
@@ -3618,6 +3670,19 @@ aarch64_reloc_none.stdout: aarch64_reloc_none
 	$(TEST_NM) $< > $@
 
 MOSTLYCLEANFILES += aarch64_reloc_none
+
+check_SCRIPTS += aarch64_relocs.sh
+check_DATA += aarch64_relocs.stdout
+aarch64_globals.o: aarch64_globals.s
+	$(TEST_AS) -o $@ $<
+aarch64_relocs.o: aarch64_relocs.s
+	$(TEST_AS) -o $@ $<
+aarch64_relocs: aarch64_relocs.o aarch64_globals.o ../ld-new
+	../ld-new -o $@ aarch64_relocs.o aarch64_globals.o -e0 --emit-relocs
+aarch64_relocs.stdout: aarch64_relocs
+	$(TEST_OBJDUMP) -dr $< > $@
+
+MOSTLYCLEANFILES += aarch64_relocs
 
 endif DEFAULT_TARGET_AARCH64
 

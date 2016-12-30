@@ -21,7 +21,7 @@
 standard_testfile .c
 
 if  { [gdb_compile "${srcdir}/${subdir}/${srcfile}" "${binfile}" executable {debug nowarnings}] != "" } {
-     untested longjmp.exp
+     untested "failed to compile"
      return -1
 }
 
@@ -32,7 +32,7 @@ if [get_compiler_info] {
 clean_restart ${binfile}
 
 if ![runto_main] then {
-   fail "Can't run to main"
+   fail "can't run to main"
    return 0
 }
 

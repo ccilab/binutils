@@ -23,6 +23,8 @@
 #ifndef UI_OUT_H
 #define UI_OUT_H 1
 
+#include "common/enum-flags.h"
+
 /* The ui_out structure */
 
 struct ui_out;
@@ -45,12 +47,12 @@ enum ui_align
   };
 
 /* flags enum */
-enum ui_flags
+enum ui_out_flag
   {
-    ui_from_tty = 1,
-    ui_source_list = 2
+    ui_source_list = (1 << 0),
   };
 
+DEF_ENUM_FLAGS_TYPE (ui_out_flag, ui_out_flags);
 
 /* Prototypes for ui-out API.  */
 
@@ -69,17 +71,14 @@ extern void ui_out_begin (struct ui_out *uiout,
 
 extern void ui_out_end (struct ui_out *uiout, enum ui_out_type type);
 
-extern struct cleanup *ui_out_begin_cleanup_end (struct ui_out *uiout,
-						 enum ui_out_type level_type,
-						 const char *id);
-
 /* A table can be considered a special tuple/list combination with the
    implied structure: ``table = { hdr = { header, ... } , body = [ {
    field, ... }, ... ] }''.  If NR_ROWS is negative then there is at
    least one row.  */
 extern void ui_out_table_header (struct ui_out *uiout, int width,
-				 enum ui_align align, const char *col_name,
-				 const char *colhdr);
+				 enum ui_align align,
+				 const std::string &col_name,
+				 const std::string &col_hdr);
 
 extern void ui_out_table_body (struct ui_out *uiout);
 
@@ -123,24 +122,18 @@ extern void ui_out_spaces (struct ui_out *uiout, int numspaces);
 
 extern void ui_out_text (struct ui_out *uiout, const char *string);
 
-extern void ui_out_message (struct ui_out *uiout, int verbosity,
-			    const char *format, ...)
-     ATTRIBUTE_PRINTF (3, 4);
+extern void ui_out_message (struct ui_out *uiout, const char *format, ...)
+     ATTRIBUTE_PRINTF (2, 3);
 
-extern void ui_out_wrap_hint (struct ui_out *uiout, char *identstring);
+extern void ui_out_wrap_hint (struct ui_out *uiout, const char *identstring);
 
 extern void ui_out_flush (struct ui_out *uiout);
 
-extern int ui_out_set_flags (struct ui_out *uiout, int mask);
-
-extern int ui_out_clear_flags (struct ui_out *uiout, int mask);
-
-extern int ui_out_get_verblvl (struct ui_out *uiout);
-
-extern int ui_out_test_flags (struct ui_out *uiout, int mask);
+extern int ui_out_test_flags (struct ui_out *uiout, ui_out_flags mask);
 
 extern int ui_out_query_field (struct ui_out *uiout, int colno,
-			       int *width, int *alignment, char **col_name);
+			       int *width, int *alignment,
+			       const char **col_name);
 
 /* HACK: Code in GDB is currently checking to see the type of ui_out
    builder when determining which output to produce.  This function is
@@ -163,16 +156,15 @@ typedef void (table_begin_ftype) (struct ui_out * uiout,
 typedef void (table_body_ftype) (struct ui_out * uiout);
 typedef void (table_end_ftype) (struct ui_out * uiout);
 typedef void (table_header_ftype) (struct ui_out * uiout, int width,
-				   enum ui_align align, const char *col_name,
-				   const char *colhdr);
-/* Note: level 0 is the top-level so LEVEL is always greater than
-   zero.  */
+				   enum ui_align align,
+				   const std::string &col_name,
+				   const std::string &col_hdr);
+
 typedef void (ui_out_begin_ftype) (struct ui_out *uiout,
 				   enum ui_out_type type,
-				   int level, const char *id);
+				   const char *id);
 typedef void (ui_out_end_ftype) (struct ui_out *uiout,
-				 enum ui_out_type type,
-				 int level);
+				 enum ui_out_type type);
 typedef void (field_int_ftype) (struct ui_out * uiout, int fldno, int width,
 				enum ui_align align,
 				const char *fldname, int value);
@@ -191,19 +183,16 @@ typedef void (field_fmt_ftype) (struct ui_out * uiout, int fldno, int width,
 typedef void (spaces_ftype) (struct ui_out * uiout, int numspaces);
 typedef void (text_ftype) (struct ui_out * uiout,
 			   const char *string);
-typedef void (message_ftype) (struct ui_out * uiout, int verbosity,
+typedef void (message_ftype) (struct ui_out * uiout,
 			      const char *format, va_list args)
-     ATTRIBUTE_FPTR_PRINTF(3,0);
-typedef void (wrap_hint_ftype) (struct ui_out * uiout, char *identstring);
+     ATTRIBUTE_FPTR_PRINTF(2,0);
+typedef void (wrap_hint_ftype) (struct ui_out * uiout, const char *identstring);
 typedef void (flush_ftype) (struct ui_out * uiout);
 typedef int (redirect_ftype) (struct ui_out * uiout,
 			      struct ui_file * outstream);
 typedef void (data_destroy_ftype) (struct ui_out *uiout);
 
 /* ui-out-impl */
-
-/* IMPORTANT: If you change this structure, make sure to change the default
-   initialization in ui-out.c.  */
 
 struct ui_out_impl
   {
@@ -235,13 +224,8 @@ extern void uo_field_string (struct ui_out *uiout, int fldno, int width,
 
 /* Create a ui_out object */
 
-extern struct ui_out *ui_out_new (const struct ui_out_impl *impl,
-				  void *data,
-				  int flags);
-
-/* Destroy a ui_out object.  */
-
-extern void ui_out_destroy (struct ui_out *uiout);
+extern struct ui_out *ui_out_new (const struct ui_out_impl *impl, void *data,
+				  ui_out_flags flags);
 
 /* Redirect the ouptut of a ui_out object temporarily.  */
 

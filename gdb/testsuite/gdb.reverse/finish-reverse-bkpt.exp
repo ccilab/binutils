@@ -30,13 +30,13 @@ if { [prepare_for_testing $testfile.exp "$testfile" $srcfile] } {
 }
 
 if ![runto_main] then {
-    fail "Can't run to main"
+    fail "can't run to main"
     return 0
 }
 
 if [supports_process_record] {
     # Activate process record/replay
-    gdb_test_no_output "record" "Turn on process record"
+    gdb_test_no_output "record" "turn on process record"
 }
 
 set breakloc [gdb_get_line_number "VOID FUNC" "$srcfile"]

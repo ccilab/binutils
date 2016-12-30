@@ -48,7 +48,7 @@ runto main
 
 if [supports_process_record] {
     # Activate process record/replay
-    gdb_test_no_output "record" "Turn on process record"
+    gdb_test_no_output "record" "turn on process record"
 }
 
 global hex
@@ -56,7 +56,7 @@ global decimal
 
 gdb_test "break $end_of_main" \
     "Breakpoint $decimal at .*$srcfile, line $end_of_main\." \
-    "BP at end of main"
+    "breakpoint at end of main"
 
 gdb_test "continue" "Breakpoint .* end of main .*" "run to end of main"
 
@@ -64,7 +64,7 @@ gdb_test "record save $precsave" \
     "Saved core file $precsave with execution log\."  \
     "save process recfile"
 
-gdb_test "kill" "" "Kill process, prepare to debug log file" \
+gdb_test "kill" "" "kill process, prepare to debug log file" \
     "Kill the program being debugged\\? \\(y or n\\) " "y"
 
 gdb_test "record restore $precsave" \

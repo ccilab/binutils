@@ -636,8 +636,7 @@ _bfd_sparc_elf_info_to_howto_ptr (unsigned int r_type)
     default:
       if (r_type >= (unsigned int) R_SPARC_max_std)
 	{
-	  (*_bfd_error_handler) (_("invalid relocation type %d"),
-				 (int) r_type);
+	  _bfd_error_handler (_("invalid relocation type %d"), (int) r_type);
 	  r_type = R_SPARC_NONE;
 	}
       return &_bfd_sparc_elf_howto_table[r_type];
@@ -1412,8 +1411,8 @@ _bfd_sparc_elf_check_relocs (bfd *abfd, struct bfd_link_info *info,
 
       if (r_symndx >= NUM_SHDR_ENTRIES (symtab_hdr))
 	{
-	  (*_bfd_error_handler) (_("%B: bad symbol index: %d"),
-				 abfd, r_symndx);
+	  /* xgettext:c-format */
+	  _bfd_error_handler (_("%B: bad symbol index: %d"), abfd, r_symndx);
 	  return FALSE;
 	}
 
@@ -1592,7 +1591,8 @@ _bfd_sparc_elf_check_relocs (bfd *abfd, struct bfd_link_info *info,
 		  tls_type = old_tls_type;
 		else
 		  {
-		    (*_bfd_error_handler)
+		    _bfd_error_handler
+		      /* xgettext:c-format */
 		      (_("%B: `%s' accessed both as normal and thread local symbol"),
 		       abfd, h ? h->root.root.string : "<local>");
 		    return FALSE;
@@ -3148,7 +3148,8 @@ _bfd_sparc_elf_relocate_section (bfd *output_bfd,
 	      else
 		name = bfd_elf_sym_name (input_bfd, symtab_hdr, sym,
 					 NULL);
-	      (*_bfd_error_handler)
+	      _bfd_error_handler
+		/* xgettext:c-format */
 		(_("%B: relocation %s against STT_GNU_IFUNC "
 		   "symbol `%s' isn't handled by %s"), input_bfd,
 		 _bfd_sparc_elf_howto_table[r_type].name,
@@ -3163,14 +3164,12 @@ _bfd_sparc_elf_relocate_section (bfd *output_bfd,
 	case R_SPARC_GOTDATA_OP_HIX22:
 	case R_SPARC_GOTDATA_OP_LOX10:
 	  if (SYMBOL_REFERENCES_LOCAL (info, h))
-	    r_type = (r_type == R_SPARC_GOTDATA_OP_HIX22
-		      ? R_SPARC_GOTDATA_HIX22
-		      : R_SPARC_GOTDATA_LOX10);
-	  else
-	    r_type = (r_type == R_SPARC_GOTDATA_OP_HIX22
-		      ? R_SPARC_GOT22
-		      : R_SPARC_GOT10);
-	  howto = _bfd_sparc_elf_howto_table + r_type;
+	    {
+	      r_type = (r_type == R_SPARC_GOTDATA_OP_HIX22
+			? R_SPARC_GOTDATA_HIX22
+			: R_SPARC_GOTDATA_LOX10);
+	      howto = _bfd_sparc_elf_howto_table + r_type;
+	    }
 	  break;
 
 	case R_SPARC_GOTDATA_OP:
@@ -3192,6 +3191,8 @@ _bfd_sparc_elf_relocate_section (bfd *output_bfd,
 	  relocation = gdopoff (info, relocation);
 	  break;
 
+	case R_SPARC_GOTDATA_OP_HIX22:
+	case R_SPARC_GOTDATA_OP_LOX10:
 	case R_SPARC_GOT10:
 	case R_SPARC_GOT13:
 	case R_SPARC_GOT22:
@@ -3527,7 +3528,7 @@ _bfd_sparc_elf_relocate_section (bfd *output_bfd,
 			  if (indx == 0)
 			    {
 			      BFD_FAIL ();
-			      (*_bfd_error_handler)
+			      _bfd_error_handler
 				(_("%B: probably compiled without -fPIC?"),
 				 input_bfd);
 			      bfd_set_error (bfd_error_bad_value);
@@ -3907,7 +3908,8 @@ _bfd_sparc_elf_relocate_section (bfd *output_bfd,
 	       && h->def_dynamic)
 	  && _bfd_elf_section_offset (output_bfd, info, input_section,
 				      rel->r_offset) != (bfd_vma) -1)
-	(*_bfd_error_handler)
+	_bfd_error_handler
+	  /* xgettext:c-format */
 	  (_("%B(%A+0x%lx): unresolvable %s relocation against symbol `%s'"),
 	   input_bfd,
 	   input_section,
@@ -4015,7 +4017,8 @@ _bfd_sparc_elf_relocate_section (bfd *output_bfd,
 	  r = bfd_reloc_ok;
 	}
       else if (r_type == R_SPARC_HIX22
-	       || r_type == R_SPARC_GOTDATA_HIX22)
+	       || r_type == R_SPARC_GOTDATA_HIX22
+	       || r_type == R_SPARC_GOTDATA_OP_HIX22)
 	{
 	  bfd_vma x;
 
@@ -4034,7 +4037,8 @@ _bfd_sparc_elf_relocate_section (bfd *output_bfd,
 				  relocation);
 	}
       else if (r_type == R_SPARC_LOX10
-	       || r_type == R_SPARC_GOTDATA_LOX10)
+	       || r_type == R_SPARC_GOTDATA_LOX10
+	       || r_type == R_SPARC_GOTDATA_OP_LOX10)
 	{
 	  bfd_vma x;
 
@@ -4574,22 +4578,11 @@ sparc_finish_dyn (bfd *output_bfd, struct bfd_link_info *info,
   for (dyncon = sdyn->contents; dyncon < dynconend; dyncon += dynsize)
     {
       Elf_Internal_Dyn dyn;
-      const char *name;
       bfd_boolean size;
 
       bed->s->swap_dyn_in (dynobj, dyncon, &dyn);
 
-      if (htab->is_vxworks && dyn.d_tag == DT_RELASZ)
-	{
-	  /* On VxWorks, DT_RELASZ should not include the relocations
-	     in .rela.plt.  */
-	  if (htab->elf.srelplt)
-	    {
-	      dyn.d_un.d_val -= htab->elf.srelplt->size;
-	      bed->s->swap_dyn_out (output_bfd, &dyn, dyncon);
-	    }
-	}
-      else if (htab->is_vxworks && dyn.d_tag == DT_PLTGOT)
+      if (htab->is_vxworks && dyn.d_tag == DT_PLTGOT)
 	{
 	  /* On VxWorks, DT_PLTGOT should point to the start of the GOT,
 	     not to the start of the PLT.  */
@@ -4617,30 +4610,36 @@ sparc_finish_dyn (bfd *output_bfd, struct bfd_link_info *info,
 	}
       else
 	{
+	  asection *s;
+
 	  switch (dyn.d_tag)
 	    {
-	    case DT_PLTGOT:   name = ".plt"; size = FALSE; break;
-	    case DT_PLTRELSZ: name = ".rela.plt"; size = TRUE; break;
-	    case DT_JMPREL:   name = ".rela.plt"; size = FALSE; break;
-	    default:	      name = NULL; size = FALSE; break;
+	    case DT_PLTGOT:
+	      s = htab->elf.splt;
+	      size = FALSE;
+	      break;
+	    case DT_PLTRELSZ:
+	      s = htab->elf.srelplt;
+	      size = TRUE;
+	      break;
+	    case DT_JMPREL:
+	      s = htab->elf.srelplt;
+	      size = FALSE;
+	      break;
+	    default:
+	      continue;
 	    }
 
-	  if (name != NULL)
+	  if (s == NULL)
+	    dyn.d_un.d_val = 0;
+	  else
 	    {
-	      asection *s;
-
-	      s = bfd_get_linker_section (dynobj, name);
-	      if (s == NULL)
-		dyn.d_un.d_val = 0;
+	      if (!size)
+		dyn.d_un.d_ptr = s->output_section->vma + s->output_offset;
 	      else
-		{
-		  if (! size)
-		    dyn.d_un.d_ptr = s->output_section->vma + s->output_offset;
-		  else
-		    dyn.d_un.d_val = s->size;
-		}
-	      bed->s->swap_dyn_out (output_bfd, &dyn, dyncon);
+		dyn.d_un.d_val = s->size;
 	    }
+	  bed->s->swap_dyn_out (output_bfd, &dyn, dyncon);
 	}
     }
   return TRUE;
@@ -4944,8 +4943,9 @@ _bfd_sparc_elf_plt_sym_val (bfd_vma i, const asection *plt, const arelent *rel)
    object file when linking.  */
 
 bfd_boolean
-_bfd_sparc_elf_merge_private_bfd_data (bfd *ibfd, bfd *obfd)
+_bfd_sparc_elf_merge_private_bfd_data (bfd *ibfd, struct bfd_link_info *info)
 {
+  bfd *obfd = info->output_bfd;
   obj_attribute *in_attr, *in_attrs;
   obj_attribute *out_attr, *out_attrs;
 
@@ -4976,9 +4976,8 @@ _bfd_sparc_elf_merge_private_bfd_data (bfd *ibfd, bfd *obfd)
   out_attr->i |= in_attr->i;
   out_attr->type = 1;
 
-
   /* Merge Tag_compatibility attributes and any common GNU ones.  */
-  _bfd_elf_merge_object_attributes (ibfd, obfd);
+  _bfd_elf_merge_object_attributes (ibfd, info);
 
   return TRUE;
 }

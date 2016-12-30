@@ -1735,11 +1735,9 @@ elf32_tic6x_finish_dynamic_symbol (bfd * output_bfd,
 				   struct elf_link_hash_entry *h,
 				   Elf_Internal_Sym * sym)
 {
-  bfd *dynobj;
   struct elf32_tic6x_link_hash_table *htab;
 
   htab = elf32_tic6x_hash_table (info);
-  dynobj = htab->elf.dynobj;
 
   if (h->plt.offset != (bfd_vma) -1)
     {
@@ -1839,8 +1837,8 @@ elf32_tic6x_finish_dynamic_symbol (bfd * output_bfd,
       /* This symbol has an entry in the global offset table.
          Set it up.  */
 
-      sgot = bfd_get_linker_section (dynobj, ".got");
-      srela = bfd_get_linker_section (dynobj, ".rela.got");
+      sgot = htab->elf.sgot;
+      srela = htab->elf.srelgot;
       BFD_ASSERT (sgot != NULL && srela != NULL);
 
       /* If this is a -Bsymbolic link, and the symbol is defined
@@ -2365,6 +2363,7 @@ elf32_tic6x_relocate_section (bfd *output_bfd,
 		  goto done_reloc;
 		}
 	    }
+	  /* Fall through.  */
 
 	case R_C6000_PCR_S12:
 	case R_C6000_PCR_S10:
@@ -2521,9 +2520,9 @@ elf32_tic6x_relocate_section (bfd *output_bfd,
 	    }
 	  else
 	    {
-	      (*_bfd_error_handler) (_("%B: SB-relative relocation but "
-				       "__c6xabi_DSBT_BASE not defined"),
-				     input_bfd);
+	      _bfd_error_handler (_("%B: SB-relative relocation but "
+				    "__c6xabi_DSBT_BASE not defined"),
+				  input_bfd);
 	      ok = FALSE;
 	      continue;
 	    }
@@ -2629,7 +2628,8 @@ elf32_tic6x_relocate_section (bfd *output_bfd,
 		 symbols.  Make this an error; the compiler isn't
 		 allowed to pass us these kinds of things.  */
 	      if (h == NULL)
-		(*_bfd_error_handler)
+		_bfd_error_handler
+		  /* xgettext:c-format */
 		  (_("%B, section %A: relocation %s with non-zero addend %d"
 		     " against local symbol"),
 		   input_bfd,
@@ -2637,7 +2637,8 @@ elf32_tic6x_relocate_section (bfd *output_bfd,
 		   elf32_tic6x_howto_table[r_type].name,
 		   rel->r_addend);
 	      else
-		(*_bfd_error_handler)
+		_bfd_error_handler
+		  /* xgettext:c-format */
 		  (_("%B, section %A: relocation %s with non-zero addend %d"
 		     " against symbol `%s'"),
 		   input_bfd,
@@ -2667,8 +2668,9 @@ elf32_tic6x_relocate_section (bfd *output_bfd,
 	  /* Invalid in relocatable object.  */
 	default:
 	  /* Unknown relocation.  */
-	  (*_bfd_error_handler) (_("%B: invalid relocation type %d"),
-				 input_bfd, r_type);
+	  /* xgettext:c-format */
+	  _bfd_error_handler (_("%B: invalid relocation type %d"),
+			      input_bfd, r_type);
 	  ok = FALSE;
 	  continue;
 	}
@@ -2806,9 +2808,9 @@ elf32_tic6x_check_relocs (bfd *abfd, struct bfd_link_info *info,
 
       if (r_symndx >= NUM_SHDR_ENTRIES (symtab_hdr))
 	{
-	  (*_bfd_error_handler) (_("%B: bad symbol index: %d"),
-				 abfd,
-				 r_symndx);
+	  /* xgettext:c-format */
+	  _bfd_error_handler (_("%B: bad symbol index: %d"),
+			      abfd, r_symndx);
 	  return FALSE;
 	}
 
@@ -3642,6 +3644,7 @@ elf32_tic6x_obj_attrs_handle_unknown (bfd *abfd, int tag)
   if ((tag & 127) < 64)
     {
       _bfd_error_handler
+	/* xgettext:c-format */
 	(_("%B: error: unknown mandatory EABI object attribute %d"),
 	 abfd, tag);
       bfd_set_error (bfd_error_bad_value);
@@ -3650,6 +3653,7 @@ elf32_tic6x_obj_attrs_handle_unknown (bfd *abfd, int tag)
   else
     {
       _bfd_error_handler
+	/* xgettext:c-format */
 	(_("%B: warning: unknown EABI object attribute %d"),
 	 abfd, tag);
       return TRUE;
@@ -3730,8 +3734,9 @@ elf32_tic6x_array_alignment_to_tag (int align)
    succeeded, FALSE otherwise.  */
 
 static bfd_boolean
-elf32_tic6x_merge_attributes (bfd *ibfd, bfd *obfd)
+elf32_tic6x_merge_attributes (bfd *ibfd, struct bfd_link_info *info)
 {
+  bfd *obfd = info->output_bfd;
   bfd_boolean result = TRUE;
   obj_attribute *in_attr;
   obj_attribute *out_attr;
@@ -3762,6 +3767,7 @@ elf32_tic6x_merge_attributes (bfd *ibfd, bfd *obfd)
       < in_attr[Tag_ABI_stack_align_needed].i)
     {
       _bfd_error_handler
+	/* xgettext:c-format */
 	(_("error: %B requires more stack alignment than %B preserves"),
 	 ibfd, obfd);
       result = FALSE;
@@ -3770,6 +3776,7 @@ elf32_tic6x_merge_attributes (bfd *ibfd, bfd *obfd)
       < out_attr[Tag_ABI_stack_align_needed].i)
     {
       _bfd_error_handler
+	/* xgettext:c-format */
 	(_("error: %B requires more stack alignment than %B preserves"),
 	 obfd, ibfd);
       result = FALSE;
@@ -3815,6 +3822,7 @@ elf32_tic6x_merge_attributes (bfd *ibfd, bfd *obfd)
   if (array_align_out < array_expect_in)
     {
       _bfd_error_handler
+	/* xgettext:c-format */
 	(_("error: %B requires more array alignment than %B preserves"),
 	 ibfd, obfd);
       result = FALSE;
@@ -3822,6 +3830,7 @@ elf32_tic6x_merge_attributes (bfd *ibfd, bfd *obfd)
   if (array_align_in < array_expect_out)
     {
       _bfd_error_handler
+	/* xgettext:c-format */
 	(_("error: %B requires more array alignment than %B preserves"),
 	 obfd, ibfd);
       result = FALSE;
@@ -3844,6 +3853,7 @@ elf32_tic6x_merge_attributes (bfd *ibfd, bfd *obfd)
 	      && out_attr[i].i != in_attr[i].i)
 	    {
 	      _bfd_error_handler
+		/* xgettext:c-format */
 		(_("warning: %B and %B differ in wchar_t size"), obfd, ibfd);
 	    }
 	  break;
@@ -3862,6 +3872,7 @@ elf32_tic6x_merge_attributes (bfd *ibfd, bfd *obfd)
 	  if (out_attr[i].i != in_attr[i].i)
 	    {
 	      _bfd_error_handler
+		/* xgettext:c-format */
 		(_("warning: %B and %B differ in whether code is "
 		   "compiled for DSBT"),
 		 obfd, ibfd);
@@ -3916,7 +3927,7 @@ elf32_tic6x_merge_attributes (bfd *ibfd, bfd *obfd)
     }
 
   /* Merge Tag_ABI_compatibility attributes and any common GNU ones.  */
-  if (!_bfd_elf_merge_object_attributes (ibfd, obfd))
+  if (!_bfd_elf_merge_object_attributes (ibfd, info))
     return FALSE;
 
   result &= _bfd_elf_merge_unknown_attribute_list (ibfd, obfd);
@@ -3925,15 +3936,15 @@ elf32_tic6x_merge_attributes (bfd *ibfd, bfd *obfd)
 }
 
 static bfd_boolean
-elf32_tic6x_merge_private_bfd_data (bfd *ibfd, bfd *obfd)
+elf32_tic6x_merge_private_bfd_data (bfd *ibfd, struct bfd_link_info *info)
 {
-  if (!_bfd_generic_verify_endian_match (ibfd, obfd))
+  if (!_bfd_generic_verify_endian_match (ibfd, info))
     return FALSE;
 
-  if (! is_tic6x_elf (ibfd) || ! is_tic6x_elf (obfd))
+  if (! is_tic6x_elf (ibfd) || ! is_tic6x_elf (info->output_bfd))
     return TRUE;
 
-  if (!elf32_tic6x_merge_attributes (ibfd, obfd))
+  if (!elf32_tic6x_merge_attributes (ibfd, info))
     return FALSE;
 
   return TRUE;
