@@ -59,3 +59,7 @@ stamp-*
 /mpc*
 /gmp*
 /isl*
+
+# ignore binutils_build folder and everthing under it
+binutils_build/
+#binutils_build/*
